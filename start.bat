@@ -1,0 +1,1 @@
+pm2 start index.js --max-memory-restart 1000M --log log.txt --time

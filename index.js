@@ -21,6 +21,7 @@ async function loop() {
 	} else if (isAfter(new Date(), endOfSchoolDay)) {
 		dateToDisplay = addBusinessDays(new Date(), 1);
 	}
+	console.log("fetching date " + dateToDisplay.toLocaleDateString());
 	const dateString = format(dateToDisplay, "d.M.y");
 	const suplovani = await work(dateString);
 	writeSuplovaniToFile(suplovani, dateString);
