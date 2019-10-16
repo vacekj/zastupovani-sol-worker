@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const fse = require("fs-extra");
 
 class BrowserManager {
 
@@ -6,13 +7,22 @@ class BrowserManager {
 	 *
 	 * @returns {Promise<{ browser, error }>}
 	 */
-	async launchBrowser(headless = true) {
+	async launchBrowser(headless = false) {
+		const userDataDir = "C:/pupdata";
+		fse.removeSync(userDataDir + "/");
+
 		const browser = await puppeteer
 			.launch({
-				headless: process.env.DEVELOPMENT ? false : true,
-				args: ['--disable-setuid-sandbox',
-					'--no-zygote'],
-				userDataDir: "C:/pupdata"
+				pipe: true,
+				headless: false,
+				args: [
+					'--disable-setuid-sandbox',
+					'--no-zygote',
+					"--window-size=1920,1080",
+					"--disable-gpu",
+					"--start-maximized",
+					"--disable-web-security"],
+				userDataDir: userDataDir
 			});
 		return { browser, error: null };
 	}

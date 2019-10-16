@@ -14,7 +14,9 @@ async function login({ browser, LOL, password }) {
 		throw new NoUserPass("No username or password was provided.");
 	}
 	try {
-		const page = (await browser.pages())[0];
+		/* let pages = await browser.pages(); */
+		let page =(await browser.pages())[0];
+		await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
 		await page.goto("https://www.skolaonline.cz/Aktuality.aspx");
 		await page.evaluate(`
 		document.querySelector("#JmenoUzivatele").value = "${LOL}";`);
