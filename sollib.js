@@ -32,6 +32,7 @@ async function login({ browser, LOL, password }) {
 		`);
 		return { browser, error: null, username };
 	} catch (error) {
+		console.error(error);
 		return { browser, error, };
 	}
 }

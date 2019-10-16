@@ -9,7 +9,7 @@ class BrowserManager {
 	async launchBrowser(headless = true) {
 		const browser = await puppeteer
 			.launch({
-				headless: process.env.DEVELOPMENT ? false : headless,
+				headless: process.env.DEVELOPMENT ? false : true,
 				args: ['--disable-setuid-sandbox',
 					'--no-zygote'],
 				userDataDir: "C:/pupdata"

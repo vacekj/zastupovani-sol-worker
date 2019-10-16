@@ -2,6 +2,7 @@ const { addBusinessDays, format, isAfter, isWeekend, setHours, startOfWeek } = r
 const fs = require("fs");
 const fse = require("fs-extra");
 const dotenv = require("dotenv");
+const chalk = require("chalk");
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ async function loop() {
 	} else if (isAfter(new Date(), endOfSchoolDay)) {
 		dateToDisplay = addBusinessDays(new Date(), 1);
 	}
-	console.log("fetching date " + dateToDisplay.toLocaleDateString());
+	console.log("Fetching date " + chalk.bold(dateToDisplay.toLocaleDateString()));
 	const dateString = format(dateToDisplay, "d.M.y");
 	const suplovani = await work(dateString);
 	writeSuplovaniToFile(suplovani, dateString);
@@ -32,10 +33,12 @@ function writeSuplovaniToFile(suplovani, dateString) {
 	console.log("Writing suplovani to path: " + path);
 	fse.ensureFileSync(path);
 	const json = JSON.stringify(suplovani);
-	fs.writeFileSync(path, json, (err) => {
-		if (err) console.log(err);
-		console.log("Successfully written zastupovani to file.");
-	});
+	fs.writeFileSync(path, json);
+	if (fse.existsSync(path)) {
+		console.log(chalk.greenBright("Successfully written zastupovani to " + path));
+	} else {
+		console.error(chalk.red("Error while writing zastupovani to " + path));
+	}
 }
 
 async function sleep(ms) {
@@ -46,9 +49,12 @@ async function sleep(ms) {
 
 
 (async () => {
-	console.log("Starting loop");
+	console.log(chalk.green("Starting loop"));
 	// noinspection InfiniteLoopJS
+	let i = 0;
 	while (true) {
+		console.log("==========================");
+		console.log(chalk.bgWhite.black("Iteration #" + i++));
 		await loop();
 	}
 })();
